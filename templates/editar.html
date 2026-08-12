@@ -10,7 +10,16 @@
         
         <div class="container">
             <h1>Editar contato</h1>
-            
+            <!-- Exibição das Mensagens Flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
             <!-- O enctype é OBRIGATÓRIO para permitir envio de arquivos -->
             <form method="POST" enctype="multipart/form-data">
                 
