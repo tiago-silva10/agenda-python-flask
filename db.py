@@ -9,17 +9,42 @@ class AgendaDB:
             password=password,
             database=database
         )
-        self.cursor = self.conn.cursor(dictionary=True)
+        self.cursor = self.conn.cursor(dictionary=True, buffered=True)
 
-    def contar_contatos(self):
-        sql = "SELECT COUNT(*) FROM contatos"
-        self.cursor.execute(sql)
-        resultado = self.cursor.fetchone()
-        return resultado[0] if isinstance(resultado, (list, tuple)) else resultado['COUNT(*)']
+    def contar_contatos(self, busca=""):
+        try:
+            if busca:
+                sql = "SELECT COUNT(*) FROM contatos WHERE nome LIKE %s OR email LIKE %s OR telefone LIKE %s"
+                termo = f"%{busca}%"
+                self.cursor.execute(sql, (termo, termo, termo))
+            else:
+                sql = "SELECT COUNT(*) FROM contatos"
+                self.cursor.execute(sql)
+                    
+            res = self.cursor.fetchone()
 
-    def listar_contatos_paginado(self, limite=10, offset=0):
-        sql = "SELECT * FROM contatos ORDER BY nome ASC LIMIT %s OFFSET %s"
-        self.cursor.execute(sql, (limite, offset))
+            if not res:
+                return 0
+            
+            if isinstance(res, dict):
+                return res.get('total') if res.get('total') is not None else list(res.values())[0]
+            
+            return res[0] if res[0] is not None else 0
+        except Exception as e:
+            print(f"Erro ao contar contatos: {e}")
+            return 0
+
+    def listar_contatos_paginado(self, limite=10, offset=0, busca=""):
+        if busca:
+            sql = """SELECT * FROM contatos 
+                    WHERE nome LIKE %s OR email LIKE %s OR telefone LIKE %s 
+                    ORDER BY nome ASC LIMIT %s OFFSET %s"""
+            termo = f"%{busca}%"
+            self.cursor.execute(sql, (termo, termo, termo, limite, offset))
+        else:
+            sql = "SELECT * FROM contatos ORDER BY nome ASC LIMIT %s OFFSET %s"
+            self.cursor.execute(sql, (limite, offset))
+            
         return self.cursor.fetchall()
 
     def listar_contatos(self):

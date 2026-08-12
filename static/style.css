@@ -65,6 +65,23 @@ h1 {
     background-color: #219150;
 }
 
+.btn-home-busca {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-home-busca:hover {
+    background-color: #2980b9;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -184,39 +201,50 @@ input[type="text"]:focus, input[type="email"]:focus {
     white-space: nowrap;
 }
 
-#divBusca {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
+form#divBusca {
+    display: flex !important;
+    flex-direction: row !important; /* Força ficar lado a lado */
+    align-items: center !important;
+    justify-content: space-between !important;
+    background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 5px 15px;
+    padding: 2px 12px;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 400px; /* Largura máxima da barra */
-    transition: border-color 0.3s;
+    max-width: 400px;
+    box-sizing: border-box;
 }
 
-#divBusca:focus-within {
-    border-color: #3498db; /* Fica azul quando você clica para digitar */
+form#divBusca:focus-within {
+    border-color: #3498db;
 }
 
 #txtBusca {
-    border: none;
-    background: transparent;
-    outline: none;
-    width: 100%;
-    font-size: 16px;
+    flex: 1;
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+    font-size: 15px;
     padding: 8px 0;
+    margin: 0 !important;
+}
+
+#btnSubmitBusca {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 #btnBuscar {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    opacity: 0.5;
-    margin-left: 10px;
-    transition: opacity 0.3s;
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
 }
 
 #btnBuscar:hover {
