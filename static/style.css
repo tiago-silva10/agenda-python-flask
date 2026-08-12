@@ -1,0 +1,148 @@
+/* style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 1000px;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-top: 0;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-novo {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+.btn-novo:hover {
+    background-color: #219150;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+th {
+    background-color: #34495e;
+    color: white;
+    font-weight: 600;
+}
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+.btn-acao {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    margin-right: 5px;
+    transition: opacity 0.3s;
+}
+.btn-acao:hover {
+    opacity: 0.8;
+}
+.editar { background-color: #f39c12; }
+.excluir { background-color: #e74c3c; }
+
+.mensagem-vazia {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+/* Estilos para os Formulários (Adicionar ao final do style.css) */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+input[type="text"], input[type="email"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, input[type="email"]:focus {
+    border-color: #3498db;
+}
+
+.btn-salvar {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 25px;
+    transition: background-color 0.3s;
+}
+
+.btn-salvar:hover {
+    background-color: #2980b9;
+}
+
+.btn-cancelar {
+    background-color: #95a5a6;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-cancelar:hover {
+    background-color: #7f8c8d;
+}
+
+.coluna-acoes {
+    white-space: nowrap;
+}

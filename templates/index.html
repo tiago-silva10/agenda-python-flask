@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Contatos</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Agenda de contatos</h1>
+            <a href="/adicionar">
+                <button class="btn-novo" type="button">+ Adicionar novo contato</button>
+            </a>
+            {% if contatos %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                            <th>Endereço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contato in contatos %}
+                        <tr>
+                            <td>{{ contato.nome }}</td>
+                            <td>{{ contato.telefone }}</td>
+                            <td>{{ contato.email }}</td>
+                            <td>{{ contato.endereco }}</td>
+                            <td class="coluna-acoes">
+                                <a href="/editar/{{ contato.id }}" class="btn-acao editar">Editar</a>
+                                <a href="/excluir/{{ contato.id }}" class="btn-acao excluir" onclick="return confirm('Tem certeza que deseja excluir este contato?');">Excluir</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h3 class="mensagem-vazia">Você ainda não tem contatos na agenda!</h3>
+            {% endif %}
+        </div>
+    </body>
+</html>

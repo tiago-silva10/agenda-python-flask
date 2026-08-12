@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <title>Adicionar Contato</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Crie um novo contato</h1>
+            <form method="POST">
+                <label>Nome:</label>
+                <input type="text" name="nome" required><br><br>
+
+                <label>Telefone:</label>
+                <input type="text" name="telefone" oninput="mascaraTelefone(this)" required><br><br>
+
+                <label>E-mail:</label>
+                <input type="email" name="email"><br><br>
+
+                <label>Endereço:</label>
+                <input type="text" name="endereco"><br><br>
+
+                <button type="submit" class="btn-salvar">Salvar</button>
+                <a href="/" class="btn-cancelar">Cancelar</a>
+            </form>
+        </div>
+        <script>
+            function mascaraTelefone(input) {
+                // Remove tudo o que não for número da digitação
+                let valor = input.value.replace(/\D/g, ''); 
+
+                // Limita a 11 números (DDD + 9 dígitos)
+                if (valor.length > 11) {
+                    valor = valor.substring(0, 11);
+                }
+
+                // Aplica a formatação baseada no tamanho do texto
+                if (valor.length > 10) {
+                    // Formato Celular: (11) 9 5566-7788
+                    valor = valor.replace(/^(\d{2})(\d)(\d{4})(\d{4})$/, '($1) $2 $3-$4');
+                } else if (valor.length > 6) {
+                    // Formato Fixo/Digitando: (11) 5566-7788
+                    valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+                } else if (valor.length > 2) {
+                    // Apenas DDD digitado: (11) 9
+                    valor = valor.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+                } else if (valor.length > 0) {
+                    // Iniciando digitação: (1
+                    valor = valor.replace(/^(\d*)/, '($1');
+                }
+
+                // Devolve o valor formatado para a caixinha de texto
+                input.value = valor;
+            }
+        </script>
+    </body>
+</html>
