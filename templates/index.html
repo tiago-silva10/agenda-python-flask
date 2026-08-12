@@ -9,9 +9,11 @@
     <body>
         <div class="container">
             <h1>Agenda de contatos</h1>
-            <a href="/adicionar">
-                <button class="btn-novo" type="button">+ Adicionar novo contato</button>
-            </a>
+            <!-- Botões de ações principais -->
+             <div class="container-botoes">
+                <a href="/adicionar" class="btn-acao-topo btn-novo">+ Adicionar novo contato</a>
+                <a href="/exportar" class="btn-acao-topo btn-exportar">📊 Exportar para Excel/CSV</a>
+             </div>
             <div id="divBusca">
                 <input type="text" id="txtBusca" placeholder="Buscar contato"/>
                 <img src="{{ url_for('static', filename='img/interrogacao.png') }}" alt="Buscar" id="btnBuscar">
