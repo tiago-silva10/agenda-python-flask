@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, Response
 from db import AgendaDB
-import os
 from werkzeug.utils import secure_filename
+import os
+import csv
+import io
 import math
 
 app = Flask(__name__)
@@ -101,6 +103,39 @@ def editar(id):
 def excluir(id):
     db.excluir_contato(id)
     return redirect(url_for('index'))
+
+@app.route('/exportar')
+def exportar_csv():
+    # 1. Busca todos os contatos do banco de dados (sem paginar, queremos todos)
+    contatos = db.listar_contatos_paginado(limite=1000, offset=0)
+
+    # 2. Cria um arquivo CSV na memória RAM
+    stream = io.StringIO()
+    writer = csv.writer(stream, delimiter=';') # Ponto e vírgula é o padrão perfeito para o Excel no Brasil
+
+    # 3. Escreve o cabeçalho das colunas
+    writer.writerow(['ID', 'Nome', 'Telefone', 'Email', 'Endereço'])
+
+    # 4. Escreve as linhas com os dados de cada contato
+    for contato in contatos:
+        # Garante suporte tanto para Dicionário quanto para Tupla
+        c_id = contato.get('id') if isinstance(contato, dict) else contato[0]
+        c_nome = contato.get('nome') if isinstance(contato, dict) else contato[1]
+        c_tel = contato.get('telefone') if isinstance(contato, dict) else contato[2]
+        c_email = contato.get('email') if isinstance(contato, dict) else contato[3]
+        c_end = contato.get('endereco') if isinstance(contato, dict) else contato[4]
+
+        writer.writerow([c_id, c_nome, c_tel, c_email, c_end])
+
+    # 5. Prepara a resposta do Flask para fazer o download do arquivo no navegador
+    output = stream.getvalue()
+    
+    # O 'utf-8-sig' é o segredo para o Excel abrir com todos os acentos e 'ç' perfeitos!
+    return Response(
+        output.encode('utf-8-sig'),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=contatos_agenda.csv"}
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

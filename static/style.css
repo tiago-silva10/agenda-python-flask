@@ -26,20 +26,42 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Container que alinha os botões perfeitamente */
+.container-botoes {
+    display: flex;
+    align-items: center; /* Alinha o centro vertical dos botões */
+    gap: 12px;           /* Espaço exato de 12px entre eles (sem traços) */
+    margin-bottom: 20px;
+}
+
+/* Estilo base idêntico para ambos os botões */
+.btn-acao-topo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;             /* Força exata e rigorosa da mesma altura */
+    padding: 0 18px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;    /* Remove qualquer sublinhado */
+    color: white;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+/* Cores específicas */
 .btn-novo {
     background-color: #27ae60;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 20px;
-    transition: background-color 0.3s;
 }
 .btn-novo:hover {
+    background-color: #219150;
+}
+
+.btn-exportar {
+    background-color: #27ae60;
+}
+.btn-exportar:hover {
     background-color: #219150;
 }
 
