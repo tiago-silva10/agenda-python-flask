@@ -17,34 +17,68 @@
                 <img src="{{ url_for('static', filename='img/interrogacao.png') }}" alt="Buscar" id="btnBuscar">
             </div>
             {% if contatos %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Telefone</th>
-                            <th>Email</th>
-                            <th>Endereço</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for contato in contatos %}
-                        <tr>
-                            <td>{{ contato.nome }}</td>
-                            <td>{{ contato.telefone }}</td>
-                            <td>{{ contato.email }}</td>
-                            <td>{{ contato.endereco }}</td>
-                            <td class="coluna-acoes">
-                                <a href="/editar/{{ contato.id }}" class="btn-acao editar">Editar</a>
-                                <a href="/excluir/{{ contato.id }}" class="btn-acao excluir" onclick="return confirm('Tem certeza que deseja excluir este contato?');">Excluir</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <!-- Tabela de Contatos -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Endereço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contato in contatos %}
+                    <!-- Suporta tanto Dicionário (contato.nome) quanto Tupla (contato[1]) -->
+                    {% set c_id = contato.id if contato.id is defined else contato[0] %}
+                    {% set c_nome = contato.nome if contato.nome is defined else contato[1] %}
+                    {% set c_tel = contato.telefone if contato.telefone is defined else contato[2] %}
+                    {% set c_email = contato.email if contato.email is defined else contato[3] %}
+                    {% set c_end = contato.endereco if contato.endereco is defined else contato[4] %}
+                    {% set c_foto = contato.foto if contato.foto is defined else (contato[5] if contato|length > 5 else 'default.png') %}
+
+                    <tr class="linha-contato" 
+                        data-nome="{{ c_nome }}" 
+                        data-telefone="{{ c_tel }}" 
+                        data-email="{{ c_email }}" 
+                        data-endereco="{{ c_end }}" 
+                        data-foto="{{ c_foto }}"
+                        onclick="abrirCard(this)">
+                        
+                        <td>{{ c_nome }}</td>
+                        <td>{{ c_tel }}</td>
+                        <td>{{ c_email }}</td>
+                        <td>{{ c_end }}</td>
+                        <td onclick="event.stopPropagation();">
+                            <a href="/editar/{{ c_id }}" class="btn-editar">Editar</a>
+                            <a href="/excluir/{{ c_id }}" class="btn-excluir" onclick="return confirm('Tem certeza que deseja excluir este contato?');">Excluir</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
                 <h3 class="mensagem-vazia">Você ainda não tem contatos na agenda!</h3>
             {% endif %}
+        </div>
+        <!-- ESTRUTURA DO CARD (MODAL) -->
+        <div id="modalCard" class="modal" onclick="fecharCard(event)">
+            <div class="card-conteudo" onclick="event.stopPropagation();">
+                <span class="btn-fechar" onclick="fecharCardDirect()">&times;</span>
+                
+                <div class="card-header">
+                    <!-- A Foto Redonda -->
+                    <img id="cardFoto" src="" alt="Foto do Contato" class="foto-perfil">
+                    <h2 id="cardNome">Nome do Contato</h2>
+                </div>
+                
+                <div class="card-body">
+                    <p><strong>📞 Telefone:</strong> <span id="cardTelefone"></span></p>
+                    <p><strong>✉️ Email:</strong> <span id="cardEmail"></span></p>
+                    <p><strong>📍 Endereço:</strong> <span id="cardEndereco"></span></p>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -72,8 +106,39 @@
                         });
                     });
                 }
-                
             });
+
+            // Script do Modal (Card de Detalhes)
+            function abrirCard(linha) {
+                // Pega os dados direto dos atributos data-* da linha
+                let nome = linha.getAttribute('data-nome');
+                let telefone = linha.getAttribute('data-telefone');
+                let email = linha.getAttribute('data-email');
+                let endereco = linha.getAttribute('data-endereco');
+                let foto = linha.getAttribute('data-foto');
+
+                document.getElementById('cardNome').textContent = nome;
+                document.getElementById('cardTelefone').textContent = telefone || 'Não informado';
+                document.getElementById('cardEmail').textContent = email || 'Não informado';
+                document.getElementById('cardEndereco').textContent = endereco || 'Não informado';
+
+                // Define o caminho da foto
+                let caminhoFoto = (foto === 'default.png' || !foto) ? '/static/img/default.png' : '/static/uploads/' + foto;
+                document.getElementById('cardFoto').src = caminhoFoto;
+
+                // Exibe o modal
+                document.getElementById('modalCard').style.display = 'flex';
+            }
+
+            function fecharCardDirect() {
+                document.getElementById('modalCard').style.display = 'none';
+            }
+
+            function fecharCard(event) {
+                if (event.target.id === 'modalCard') {
+                    fecharCardDirect();
+                }
+            }
         </script>
     </body>
 </html>

@@ -3,38 +3,53 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Contato</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <title>{{ acao }} Contato</title>
     </head>
     <body>
+        
         <div class="container">
-            <h1>{{ acao }} contato</h1>
-            <form method="POST"  class="container">
+            <h1>Editar contato</h1>
+            
+            <!-- O enctype é OBRIGATÓRIO para permitir envio de arquivos -->
+            <form method="POST" enctype="multipart/form-data">
+                
+                <!-- Mostra a foto atual do contato em miniatura -->
+                {% set foto_atual = contato.foto if contato.foto is defined else (contato[5] if contato|length > 5 else 'default.png') %}
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px;">Foto Atual:</label>
+                    <img src="{{ url_for('static', filename='img/' + foto_atual) if foto_atual == 'default.png' else url_for('static', filename='uploads/' + foto_atual) }}" 
+                        alt="Foto do contato" 
+                        style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #3498db;">
+                </div>
+
+                <label>Alterar Foto de Perfil (Opcional):</label>
+                <input type="file" name="foto" accept="image/*">
+
                 <label>Nome:</label>
-                <!-- Note o uso correto das chaves duplas dentro das aspas do value -->
-                <input type="text" name="nome" value="{{ contato.nome }}" required><br><br>
+                <input type="text" name="nome" value="{{ contato.nome if contato.nome is defined else contato[1] }}" required>
 
                 <label>Telefone:</label>
-                <input type="text" name="telefone" value="{{ contato.telefone }}" oninput="mascaraTelefone(this)" required><br><br>
+                <input type="text" name="telefone" value="{{ contato.telefone if contato.telefone is defined else contato[2] }}" oninput="mascaraTelefone(this)" required>
 
                 <label>E-mail:</label>
-                <input type="email" name="email" value="{{ contato.email }}"><br><br>
+                <input type="email" name="email" value="{{ contato.email if contato.email is defined else contato[3] }}">
 
                 <label>Endereço:</label>
-                <input type="text" name="endereco" value="{{ contato.endereco }}"><br><br>
+                <input type="text" name="endereco" value="{{ contato.endereco if contato.endereco is defined else contato[4] }}">
 
                 <button type="submit" class="btn-salvar">Salvar Alterações</button>
-                <a href="/" class="btn-cancelar"">Cancelar</a>
+                <a href="/" class="btn-cancelar">Cancelar</a>
             </form>
         </div>
+
+        <!-- Script da máscara de telefone -->
         <script>
             function mascaraTelefone(input) {
                 let valor = input.value.replace(/\D/g, ''); 
-
                 if (valor.length > 11) {
                     valor = valor.substring(0, 11);
                 }
-
                 if (valor.length > 10) {
                     valor = valor.replace(/^(\d{2})(\d)(\d{4})(\d{4})$/, '($1) $2 $3-$4');
                 } else if (valor.length > 6) {
@@ -44,7 +59,6 @@
                 } else if (valor.length > 0) {
                     valor = valor.replace(/^(\d*)/, '($1');
                 }
-
                 input.value = valor;
             }
         </script>
