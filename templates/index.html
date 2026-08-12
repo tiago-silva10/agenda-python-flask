@@ -9,15 +9,18 @@
     <body>
         <div class="container">
             <h1>Agenda de contatos</h1>
+            
             <!-- Botões de ações principais -->
              <div class="container-botoes">
                 <a href="/adicionar" class="btn-acao-topo btn-novo">+ Adicionar novo contato</a>
                 <a href="/exportar" class="btn-acao-topo btn-exportar">📊 Exportar para Excel/CSV</a>
              </div>
-            <div id="divBusca">
-                <input type="text" id="txtBusca" placeholder="Buscar contato"/>
-                <img src="{{ url_for('static', filename='img/interrogacao.png') }}" alt="Buscar" id="btnBuscar">
-            </div>
+            
+            <!-- Barra de busca -->
+             <form method="GET" action="/" id="divBusca">
+                <input type="text" name="busca" id="txtBusca" placeholder="Buscar contato e aperte Enter..." value="{{ busca }}">
+                <button type="submit" id="btnSubmitBusca"></button>
+            </form>
             {% if contatos %}
             <!-- Tabela de Contatos -->
             <table>
@@ -80,7 +83,18 @@
                 {% endif %}
             </div>
             {% else %}
-                <h3 class="mensagem-vazia">Você ainda não tem contatos na agenda!</h3>
+                {% if busca %}
+                    <h3 class="mensagem-vazia">
+                        "<strong>{{ busca }}</strong>" não encontrado na agenda!
+                    </h3>
+                    <a href="/" class="btn-home-busca">
+                        🏠 Voltar para a Página Inicial
+                    </a>
+                {% else %}
+                    <h3 class="mensagem-vazia">
+                        Você ainda não tem contatos na agenda!
+                    </h3>
+                {% endif %}
             {% endif %}
         </div>
         <!-- ESTRUTURA DO CARD (MODAL) -->
@@ -103,32 +117,6 @@
         </div>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                
-                const inputBusca = document.getElementById('txtBusca');
-                
-                // Verifica se a barra de pesquisa realmente existe na tela
-                if (inputBusca) {
-                    inputBusca.addEventListener('keyup', function() {
-                        let textoBusca = this.value.toLowerCase();
-                        
-                        // Pega todas as linhas que estão dentro do <tbody>
-                        let linhasContatos = document.querySelectorAll('tbody tr');
-
-                        linhasContatos.forEach(function(linha) {
-                            // textContent consegue ler todo o texto da linha da tabela de forma mais confiável
-                            let textoDaLinha = linha.textContent.toLowerCase();
-                            
-                            if (textoDaLinha.includes(textoBusca)) {
-                                linha.style.display = ''; // Mostra
-                            } else {
-                                linha.style.display = 'none'; // Esconde
-                            }
-                        });
-                    });
-                }
-            });
-
             // Script do Modal (Card de Detalhes)
             function abrirCard(linha) {
                 // Pega os dados direto dos atributos data-* da linha

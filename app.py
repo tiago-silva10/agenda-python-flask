@@ -22,24 +22,26 @@ db = AgendaDB(host="127.0.0.1", user="root", password="root", database="agenda_d
 
 @app.route('/')
 def index():
-    # Pega o número da página atual pela URL (se não passar nada, assume página 1)
     pagina = request.args.get('pagina', 1, type=int)
-    
-    limite = 10 # 10 contatos por página
-    offset = (pagina - 1) * limite # Calcula quantos registros 'pular' no banco
+    busca = request.args.get('busca', '', type=str)
 
-    # Busca apenas os 10 contatos da página atual
-    contatos = db.listar_contatos_paginado(limite, offset)
-    
-    # Calcula o total de páginas
-    total_contatos = db.contar_contatos()
-    total_paginas = math.ceil(total_contatos / limite) if total_contatos > 0 else 1
+    limite = 10
+    offset = (pagina - 1) * limite
 
+    contatos = db.listar_contatos_paginado(limite, offset, busca)
+    
+    total_contatos = db.contar_contatos(busca)
+    if total_contatos is None:
+        total_contatos = 0
+    else:
+        total_paginas = 1
+        
     return render_template(
         'index.html', 
         contatos=contatos, 
         pagina_atual=pagina, 
-        total_paginas=total_paginas
+        total_paginas=total_paginas,
+        busca=busca
     )
 
 @app.route('/adicionar', methods=['GET', 'POST'])
