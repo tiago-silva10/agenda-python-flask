@@ -30,11 +30,9 @@ def index():
 
     contatos = db.listar_contatos_paginado(limite, offset, busca)
     
-    total_contatos = db.contar_contatos(busca)
-    if total_contatos is None:
-        total_contatos = 0
-    else:
-        total_paginas = 1
+    total_contatos = db.contar_contatos(busca) or 0
+
+    total_paginas = math.ceil(total_contatos / limite) if total_contatos > 0 else 1
         
     return render_template(
         'index.html', 
