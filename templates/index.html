@@ -12,6 +12,10 @@
             <a href="/adicionar">
                 <button class="btn-novo" type="button">+ Adicionar novo contato</button>
             </a>
+            <div id="divBusca">
+                <input type="text" id="txtBusca" placeholder="Buscar contato"/>
+                <img src="{{ url_for('static', filename='img/interrogacao.png') }}" alt="Buscar" id="btnBuscar">
+            </div>
             {% if contatos %}
                 <table>
                     <thead>
@@ -42,5 +46,34 @@
                 <h3 class="mensagem-vazia">Você ainda não tem contatos na agenda!</h3>
             {% endif %}
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                
+                const inputBusca = document.getElementById('txtBusca');
+                
+                // Verifica se a barra de pesquisa realmente existe na tela
+                if (inputBusca) {
+                    inputBusca.addEventListener('keyup', function() {
+                        let textoBusca = this.value.toLowerCase();
+                        
+                        // Pega todas as linhas que estão dentro do <tbody>
+                        let linhasContatos = document.querySelectorAll('tbody tr');
+
+                        linhasContatos.forEach(function(linha) {
+                            // textContent consegue ler todo o texto da linha da tabela de forma mais confiável
+                            let textoDaLinha = linha.textContent.toLowerCase();
+                            
+                            if (textoDaLinha.includes(textoBusca)) {
+                                linha.style.display = ''; // Mostra
+                            } else {
+                                linha.style.display = 'none'; // Esconde
+                            }
+                        });
+                    });
+                }
+                
+            });
+        </script>
     </body>
 </html>
