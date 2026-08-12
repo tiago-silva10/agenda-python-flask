@@ -80,6 +80,16 @@ class AgendaDB:
         self.cursor.execute(sql, (id,))
         self.conn.commit()
 
+    def cadastrar_usuario(self, nome, email, senha_hash):
+        sql = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
+        self.cursor.execute(sql, (nome, email, senha_hash))
+        self.conn.commit()
+
+    def buscar_usuario_por_email(self, email):
+        sql = "SELECT * FROM usuarios WHERE email = %s"
+        self.cursor.execute(sql, (email,))
+        return self.cursor.fetchone()
+
     def fechar(self):
         # Fecha a conexão
         self.cursor.close()

@@ -9,6 +9,10 @@
     <body>
         <div class="container">
             <h1>Agenda de contatos</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <span>Olá, <strong>{{ session['usuario_nome'] }}</strong>!</span>
+                <a href="/logout" style="color: #e74c3c; text-decoration: none; font-weight: bold;">🚪 Sair</a>
+            </div>
             
             <!-- Botões de ações principais -->
              <div class="container-botoes">
