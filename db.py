@@ -11,6 +11,17 @@ class AgendaDB:
         )
         self.cursor = self.conn.cursor(dictionary=True)
 
+    def contar_contatos(self):
+        sql = "SELECT COUNT(*) FROM contatos"
+        self.cursor.execute(sql)
+        resultado = self.cursor.fetchone()
+        return resultado[0] if isinstance(resultado, (list, tuple)) else resultado['COUNT(*)']
+
+    def listar_contatos_paginado(self, limite=10, offset=0):
+        sql = "SELECT * FROM contatos LIMIT %s OFFSET %s"
+        self.cursor.execute(sql, (limite, offset))
+        return self.cursor.fetchall()
+
     def listar_contatos(self):
         # READ: Retorna todos os contatos
         self.cursor.execute("SELECT * FROM contatos")

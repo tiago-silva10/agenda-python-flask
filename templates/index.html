@@ -58,6 +58,25 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <!-- Botões de Paginação -->
+            <div class="paginacao">
+                <!-- Botão Anterior -->
+                {% if pagina_atual > 1 %}
+                    <a href="/?pagina={{ pagina_atual - 1 }}" class="btn-pagina">&laquo; Anterior</a>
+                {% else %}
+                    <span class="btn-pagina desativado">&laquo; Anterior</span>
+                {% endif %}
+
+                <!-- Indicador da página atual -->
+                <span class="info-pagina">Página {{ pagina_atual }} de {{ total_paginas }}</span>
+
+                <!-- Botão Próxima -->
+                {% if pagina_atual < total_paginas %}
+                    <a href="/?pagina={{ pagina_atual + 1 }}" class="btn-pagina">Próxima &raquo;</a>
+                {% else %}
+                    <span class="btn-pagina desativado">Próxima &raquo;</span>
+                {% endif %}
+            </div>
             {% else %}
                 <h3 class="mensagem-vazia">Você ainda não tem contatos na agenda!</h3>
             {% endif %}
