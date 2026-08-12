@@ -20,14 +20,14 @@ class AgendaDB:
         self.cursor.execute("SELECT * FROM contatos WHERE id = %s", (id,))
         return self.cursor.fetchone()
 
-    def adicionar_contato(self, nome, telefone, email, endereco):
-        sql = "INSERT INTO contatos (nome, telefone, email, endereco) VALUES (%s, %s, %s, %s)"
-        self.cursor.execute(sql, (nome, telefone, email, endereco))
+    def adicionar_contato(self, nome, telefone, email, endereco, foto='default.png'):
+        sql = "INSERT INTO contatos (nome, telefone, email, endereco, foto) VALUES (%s, %s, %s, %s, %s)"
+        self.cursor.execute(sql, (nome, telefone, email, endereco, foto))
         self.conn.commit()
 
-    def editar_contato(self, id, nome, telefone, email, endereco):
-        sql = "UPDATE contatos SET nome = %s, telefone = %s, email = %s, endereco = %s WHERE id = %s"
-        self.cursor.execute(sql, (nome, telefone, email, endereco, id))
+    def editar_contato(self, id, nome, telefone, email, endereco, foto):
+        sql = "UPDATE contatos SET nome = %s, telefone = %s, email = %s, endereco = %s, foto=%s WHERE id = %s"
+        self.cursor.execute(sql, (nome, telefone, email, endereco, foto, id))
         self.conn.commit()
 
     def excluir_contato(self, id):

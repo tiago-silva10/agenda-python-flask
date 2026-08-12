@@ -185,3 +185,87 @@ input[type="text"]:focus, input[type="email"]:focus {
 #btnBuscar:hover {
     opacity: 1;
 }
+
+/* Efeito de mãozinha ao passar o mouse na linha da tabela */
+.linha-contato {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.linha-contato:hover {
+    background-color: #f1f5f9;
+}
+
+/* Fundo escurecido do Modal */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Escurece a tela ao fundo */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* O Cartão do Contato */
+.card-conteudo {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Botão de Fechar (X) */
+.btn-fechar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+}
+
+.btn-fechar:hover {
+    color: #333;
+}
+
+/* Foto do Perfil Redonda */
+.foto-perfil {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%; /* Torna a foto perfeitamente redonda */
+    object-fit: cover;  /* Evita que a foto fique esticada ou achatada */
+    border: 4px solid #3498db;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header h2 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 22px;
+}
+
+.card-body p {
+    margin: 12px 0;
+    color: #555;
+    font-size: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+/* Animação suave de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}

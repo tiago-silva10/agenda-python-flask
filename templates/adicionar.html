@@ -9,7 +9,11 @@
     <body>
         <div class="container">
             <h1>Crie um novo contato</h1>
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
+
+                <label>Foto de Perfil:</label>
+                <input type="file" name="foto" accept="image/*">
+
                 <label>Nome:</label>
                 <input type="text" name="nome" required><br><br>
 
@@ -22,7 +26,7 @@
                 <label>Endereço:</label>
                 <input type="text" name="endereco"><br><br>
 
-                <button type="submit" class="btn-salvar">Salvar</button>
+                <button type="submit" class="btn-salvar">Salvar Contato</button>
                 <a href="/" class="btn-cancelar">Cancelar</a>
             </form>
         </div>
