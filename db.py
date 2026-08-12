@@ -18,7 +18,7 @@ class AgendaDB:
         return resultado[0] if isinstance(resultado, (list, tuple)) else resultado['COUNT(*)']
 
     def listar_contatos_paginado(self, limite=10, offset=0):
-        sql = "SELECT * FROM contatos LIMIT %s OFFSET %s"
+        sql = "SELECT * FROM contatos ORDER BY nome ASC LIMIT %s OFFSET %s"
         self.cursor.execute(sql, (limite, offset))
         return self.cursor.fetchall()
 
@@ -29,6 +29,15 @@ class AgendaDB:
 
     def buscar_contato(self, id):
         self.cursor.execute("SELECT * FROM contatos WHERE id = %s", (id,))
+        return self.cursor.fetchone()
+
+    def buscar_duplicado(self, telefone, email, id_atual=None):
+        if id_atual:
+            sql = "SELECT * FROM contatos WHERE (telefone = %s OR email = %s) AND id != %s"
+            self.cursor.execute(sql, (telefone, email, id_atual))
+        else:
+            sql = "SELECT * FROM contatos WHERE telefone = %s OR email = %s"
+            self.cursor.execute(sql, (telefone, email)) 
         return self.cursor.fetchone()
 
     def adicionar_contato(self, nome, telefone, email, endereco, foto='default.png'):

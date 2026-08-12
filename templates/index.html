@@ -50,7 +50,7 @@
                         <td>{{ c_tel }}</td>
                         <td>{{ c_email }}</td>
                         <td>{{ c_end }}</td>
-                        <td onclick="event.stopPropagation();">
+                        <td class="coluna-acoes" onclick="event.stopPropagation();">
                             <a href="/editar/{{ c_id }}" class="btn-editar">Editar</a>
                             <a href="/excluir/{{ c_id }}" class="btn-excluir" onclick="return confirm('Tem certeza que deseja excluir este contato?');">Excluir</a>
                         </td>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from db import AgendaDB
 import os
 from werkzeug.utils import secure_filename
@@ -6,6 +6,7 @@ import math
 
 app = Flask(__name__)
 
+app.secret_key = 'sua_chave_secreta_super_segura'
 # Configura o caminho absoluto dinâmico para a pasta de uploads (evita erro de FileNotFoundError)
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
@@ -46,6 +47,12 @@ def adicionar():
         telefone = request.form['telefone']
         email = request.form['email']
         endereco = request.form['endereco']
+
+        if telefone or email:
+            duplicado = db.buscar_duplicado(telefone, email)
+            if duplicado:
+                flash("Atenção: Já existe um contato com este telefone ou e-mail!", "erro")
+                return render_template('adicionar.html', acao="Adicionar", contato=None)
         
         foto = request.files.get('foto')
         nome_arquivo = 'default.png'
@@ -69,9 +76,13 @@ def editar(id):
         telefone = request.form['telefone']
         email = request.form['email']
         endereco = request.form['endereco']
-        
-        # Mantém a foto antiga por padrão caso nenhuma nova seja enviada
-        # (Assumindo que no dicionário/tupla do contato a foto seja o último item ou contato['foto'])
+
+        if telefone or email:
+            duplicado = db.buscar_duplicado(telefone, email, id_atual=id)
+            if duplicado:
+                flash("Atenção: Este telefone ou e-mail já pertence a outro contato!", "erro")
+                return render_template('editar.html', acao="Editar", contato=contato)
+            
         nome_arquivo = contato[5] if isinstance(contato, (list, tuple)) else contato.get('foto', 'default.png')
         
         foto = request.files.get('foto')
