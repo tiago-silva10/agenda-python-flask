@@ -146,3 +146,42 @@ input[type="text"]:focus, input[type="email"]:focus {
 .coluna-acoes {
     white-space: nowrap;
 }
+
+#divBusca {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 15px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px; /* Largura máxima da barra */
+    transition: border-color 0.3s;
+}
+
+#divBusca:focus-within {
+    border-color: #3498db; /* Fica azul quando você clica para digitar */
+}
+
+#txtBusca {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+    padding: 8px 0;
+}
+
+#btnBuscar {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    opacity: 0.5;
+    margin-left: 10px;
+    transition: opacity 0.3s;
+}
+
+#btnBuscar:hover {
+    opacity: 1;
+}
