@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from db import AgendaDB
 import os
 from werkzeug.utils import secure_filename
+import math
 
 app = Flask(__name__)
 
@@ -18,8 +19,25 @@ db = AgendaDB(host="127.0.0.1", user="root", password="root", database="agenda_d
 
 @app.route('/')
 def index():
-    contatos = db.listar_contatos()
-    return render_template('index.html', contatos=contatos)
+    # Pega o número da página atual pela URL (se não passar nada, assume página 1)
+    pagina = request.args.get('pagina', 1, type=int)
+    
+    limite = 10 # 10 contatos por página
+    offset = (pagina - 1) * limite # Calcula quantos registros 'pular' no banco
+
+    # Busca apenas os 10 contatos da página atual
+    contatos = db.listar_contatos_paginado(limite, offset)
+    
+    # Calcula o total de páginas
+    total_contatos = db.contar_contatos()
+    total_paginas = math.ceil(total_contatos / limite) if total_contatos > 0 else 1
+
+    return render_template(
+        'index.html', 
+        contatos=contatos, 
+        pagina_atual=pagina, 
+        total_paginas=total_paginas
+    )
 
 @app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
